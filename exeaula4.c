@@ -159,7 +159,6 @@ void POPname (Pilha *p, char *nome)
     pAux = (Pilha *)malloc(sizeof(Pilha));
     RESET(pAux);
 
-    //pAux->ppl = (Pessoa *)malloc(sizeof(Pessoa));
     aux = (Pessoa *)malloc(sizeof(Pessoa));
 
     while (acho == 0)
@@ -189,7 +188,6 @@ void POPname (Pilha *p, char *nome)
         PUSH(p, aux);
     }
 
-//free (pAux->ppl);
 free (pAux);
 free (aux);
 }

@@ -21,8 +21,8 @@ void RESET (Pilha *p);
 void PUSH (Pilha *p, Pessoa *nova);
 unsigned int POP (Pilha *p, Pessoa *popada);
 void POPname (Pilha *p, char *nome);
-//void CLEAR (Pilha *p);
-//void LIST (Pilha *p);
+void CLEAR (Pilha *p);
+void LIST (Pilha *p);
 
 int main()
 {
@@ -52,7 +52,7 @@ int main()
                 free(item);
                 break;
             case 1:
-                POP(p, item);
+                POP(p, NULL);
                 break;
             case 2:
                 nome = (char *)malloc(sizeof(char) * 30);
@@ -66,23 +66,11 @@ int main()
                 free(nome);
                 break;
             case 3:
-                item = (Pessoa *)malloc(sizeof(Pessoa));
-
-                popo = POP(p, item);
-                if (popo == 1)
-                    printf ("%s, Idade: %d\n",item->nome,item->idade);
-                
-                popo = 0;
-                free(item);
-                break;
-                /*
-            case 3:
                 CLEAR(p);
                 break;
             case 4:
                 LIST(p);
                 break;
-                */
             case 5:
                 free(p->ppl);
                 free(p);
@@ -99,7 +87,7 @@ int menu (void)
     printf ("0. Insere pessoa\n");
     printf ("1. Deleta pessoa do topo\n");
     printf ("2. Deleta pessoa por nome\n");
-    printf ("3. Limpa a pilha (TA POPANDO)\n");
+    printf ("3. Limpa a pilha\n");
     printf ("4. Lista na tela as pessoas\n");
     printf ("5. Sair do programa\n");
     printf ("Opcao: ");
@@ -142,8 +130,10 @@ unsigned int POP (Pilha *p, Pessoa *popada)
     }
     else
     {
-        *popada = *(p->topo);
         p->limite--;
+
+        if (popada != NULL)
+            *popada = *(p->topo);
 
         if (p->limite > 0)
         {
@@ -169,7 +159,7 @@ void POPname (Pilha *p, char *nome)
     pAux = (Pilha *)malloc(sizeof(Pilha));
     RESET(pAux);
 
-    pAux->ppl = (Pessoa *)malloc(sizeof(Pessoa));
+    //pAux->ppl = (Pessoa *)malloc(sizeof(Pessoa));
     aux = (Pessoa *)malloc(sizeof(Pessoa));
 
     while (acho == 0)
@@ -188,7 +178,7 @@ void POPname (Pilha *p, char *nome)
         }
         else
         {
-            printf ("\nNome não encontrado!\n");
+            printf ("Nome nao encontrado!\n");
             acho = 1;
         }
     }
@@ -199,7 +189,39 @@ void POPname (Pilha *p, char *nome)
         PUSH(p, aux);
     }
 
-free (pAux->ppl);
+//free (pAux->ppl);
 free (pAux);
 free (aux);
+}
+
+void CLEAR (Pilha *p)
+{
+    while (p->limite > 0)
+        POP(p, NULL);
+}
+
+void LIST (Pilha *p)
+{
+    Pilha *pAux;
+    Pessoa *aux;
+
+    pAux = (Pilha *)malloc(sizeof(Pilha));
+    aux = (Pessoa *)malloc(sizeof(Pessoa));
+    RESET(pAux);
+
+    while (p->limite > 0)
+    {
+        POP(p, aux);
+        printf ("P[%d]= %s, Idade: %d\n",p->limite,aux->nome,aux->idade);
+        PUSH(pAux, aux);
+    }
+
+    while (pAux->limite > 0)
+    {
+        POP(pAux, aux);
+        PUSH(p, aux);
+    }
+
+    free(pAux);
+    free(aux);
 }

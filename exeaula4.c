@@ -21,12 +21,12 @@ void RESET (Pilha *p);
 void PUSH (Pilha *p, Pessoa *nova);
 unsigned int POP (Pilha *p, Pessoa *popada);
 void POPname (Pilha *p, char *nome);
-void CLEAR (Pilha *p);
-void LIST (Pilha *p);
+//void CLEAR (Pilha *p);
+//void LIST (Pilha *p);
 
 int main()
 {
-    int opc=0;
+    int opc=0, popo=0;
     Pessoa *item;
     Pilha *p;
     char *nome;
@@ -66,11 +66,23 @@ int main()
                 free(nome);
                 break;
             case 3:
+                item = (Pessoa *)malloc(sizeof(Pessoa));
+
+                popo = POP(p, item);
+                if (popo == 1)
+                    printf ("%s, Idade: %d\n",item->nome,item->idade);
+                
+                popo = 0;
+                free(item);
+                break;
+                /*
+            case 3:
                 CLEAR(p);
                 break;
             case 4:
                 LIST(p);
                 break;
+                */
             case 5:
                 free(p->ppl);
                 free(p);
@@ -87,7 +99,7 @@ int menu (void)
     printf ("0. Insere pessoa\n");
     printf ("1. Deleta pessoa do topo\n");
     printf ("2. Deleta pessoa por nome\n");
-    printf ("3. Limpa a pilha\n");
+    printf ("3. Limpa a pilha (TA POPANDO)\n");
     printf ("4. Lista na tela as pessoas\n");
     printf ("5. Sair do programa\n");
     printf ("Opcao: ");
@@ -151,22 +163,43 @@ unsigned int POP (Pilha *p, Pessoa *popada)
 void POPname (Pilha *p, char *nome)
 {
     Pilha *pAux;
-    int i, popo=0;
+    Pessoa *aux;
+    int i, popo=0, acho=0, auxlim;
 
     pAux = (Pilha *)malloc(sizeof(Pilha));
     RESET(pAux);
 
     pAux->ppl = (Pessoa *)malloc(sizeof(Pessoa));
+    aux = (Pessoa *)malloc(sizeof(Pessoa));
 
-    for (i=0; i < p->limite; i++)
+    while (acho == 0)
     {
-        popo = POP (p, &pAux->ppl[i]);
+        popo = POP (p, aux);
         if (popo == 1)
         {
-            if (strcmp(pAux->ppl[i].nome, nome))
+            if ((strcmp(aux->nome, nome)) == 0)
             {
-                
+                acho = 1;
+            }
+            else
+            {
+                PUSH(pAux, aux);
             }
         }
+        else
+        {
+            printf ("\nNome não encontrado!\n");
+            acho = 1;
+        }
     }
+    auxlim = pAux->limite;
+    for (i=0; i < auxlim; i++)
+    {
+        POP(pAux, aux);
+        PUSH(p, aux);
+    }
+
+free (pAux->ppl);
+free (pAux);
+free (aux);
 }

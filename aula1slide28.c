@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct{
     char nome[50];
     int idade;
-    int cpf;
+    long long int cpf;
 }Pessoa;
 
 typedef struct{
@@ -15,61 +16,57 @@ typedef struct{
     char aux[50];
 }Controle;
 
-int menu (void);
+void menu (Controle *pBuff);
 void insere (Controle *b);
 void apaga (Controle *b);
 void busca (Controle *b);
-
+void lista (Controle *b);
 
 int main()
 {
-    Controle *pBuffer;
-    pBuffer = (Controle *)malloc(sizeof(Controle));
-    pBuffer->opc = 0;
-    pBuffer->indice = 0;
+    void *pBuffer;
+    pBuffer = malloc(sizeof(Controle));
+    menu (pBuffer);
+    return 0;
+}
 
-    while (pBuffer->opc != 5)
+void menu (Controle *pBuff)
+{
+    pBuff->opc = 0;
+    pBuff->indice = 0;
+
+    while (pBuff->opc != 5)
     {
-        pBuffer->opc = menu();
-        switch (pBuffer->opc)
+        printf ("AULA 1 SLIDE 28 - EH O GUTHS\n");
+        printf ("1. Inserir pessoa\n");
+        printf ("2. Apagar pessoa\n");
+        printf ("3. Buscar pessoa\n");
+        printf ("4. Listar pessoas\n");
+        printf ("5. Sair do programa\n");
+        printf ("Opcao: ");
+        scanf ("%d",&pBuff->opc);
+
+        switch (pBuff->opc)
         {
             case 1:
-                insere(pBuffer);
+                insere(pBuff);
                 break;
             case 2:
-                apaga(pBuffer);
+                apaga(pBuff);
                 break;
             case 3:
-                busca(pBuffer);
+                busca(pBuff);
                 break;
-                /*
             case 4:
-                lista(pBuffer);
+                lista(pBuff);
                 break;
-                */
             case 5:
-                free(pBuffer->ppl);
-                free(pBuffer);
+                free(pBuff->ppl);
+                free(pBuff);
                 exit(0);
                 break;
         }
-
     }
-
-}
-
-int menu (void)
-{
-    int o;
-    printf ("AULA 1 SLIDE 28 - EH O GUTHS\n");
-    printf ("1. Inserir pessoa\n");
-    printf ("2. Apagar pessoa\n");
-    printf ("3. Buscar pessoa\n");
-    printf ("4. Listar pessoas\n");
-    printf ("5. Sair do programa\n");
-    printf ("Opcao: ");
-    scanf ("%d",&o);
-    return o;
 }
 
 void insere (Controle *b)
@@ -81,18 +78,18 @@ void insere (Controle *b)
 
     setbuf(stdin,NULL);
     printf ("Nome: ");
-    scanf ("%[^\n]",b->ppl->nome);
+    scanf ("%[^\n]",b->ppl[b->indice].nome);
     printf ("Idade: ");
-    scanf ("%d",&b->ppl->idade);    
+    scanf ("%d",&b->ppl[b->indice].idade);    
     printf ("CPF: ");
-    scanf ("%d",&b->ppl->cpf);
+    scanf ("%lld",&b->ppl[b->indice].cpf);
 
     b->indice++;
 }
 
 void apaga (Controle *b)
 {
-    if (b->indice != 0)
+    if (b->indice > 0)
     {
         printf ("Nome da pessoa que deseja apagar: ");
         setbuf(stdin,NULL);
@@ -105,17 +102,25 @@ void apaga (Controle *b)
                 b->j = b->i;
         }
 
-        for (b->i = b->j; b->i < b->indice - 1; b->i++)
+        if (b->j != -1)
         {
-            b->ppl[b->i] = b->ppl[b->i + 1];
-        }
+            for (b->i = b->j; b->i < b->indice - 1; b->i++)
+            {
+                b->ppl[b->i] = b->ppl[b->i + 1];
+            }
 
-        b->indice--;
-        
-        if (b->indice != 0)
-            b->ppl = realloc (b->ppl, sizeof(Pessoa) * b->indice);
+            b->indice--;
+
+            if (b->indice > 0)
+                b->ppl = realloc (b->ppl, sizeof(Pessoa) * b->indice);
+            else
+                free(b->ppl);
+        }
         else
-            free(b->ppl);
+        {
+            printf ("Nao tem ninguem com esse nome na agenda!\n");
+        }
+        
     }
     else
     {
@@ -129,4 +134,24 @@ void busca (Controle *b)
     printf ("Nome da pessoa que deseja buscar: ");
     setbuf(stdin,NULL);
     scanf ("%[^\n]",b->aux);
+    b->j = -1;
+
+    for (b->i = 0; b->i < b->indice && b->j == -1; b->i++)
+    {
+        if ((strcmp(b->aux, b->ppl[b->i].nome)) == 0)
+        {
+            printf ("\n%s\nIdade: %d\nCPF: %.11lld\n\n",b->ppl[b->i].nome,b->ppl[b->i].idade,b->ppl[b->i].cpf);
+            b->j = 0;
+        }
+    }
+    if (b->j == -1)
+        printf ("Nao tem ninguem com esse nome na agenda!\n");
+}
+
+void lista (Controle *b)
+{
+    for (b->i = 0; b->i < b->indice; b->i++)
+    {
+        printf ("%s, Idade: %d, CPF: %.11lld\n",b->ppl[b->i].nome,b->ppl[b->i].idade,b->ppl[b->i].cpf);
+    }
 }

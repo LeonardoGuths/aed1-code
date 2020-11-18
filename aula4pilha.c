@@ -85,12 +85,12 @@ int main()
 int menu (void)
 {
     int o;
-    printf ("TESTE DE PILHA - EH O GUTHS\n");
+    printf ("AULA 4 - PILHA - EH O GUTHS\n");
     printf ("1. RESET\n");
     printf ("2. PUSH\n");
     printf ("3. POP\n");
-    printf ("4. EMPTY (desativado)\n");
-    printf ("5. FULL (desativado)\n");
+    printf ("4. EMPTY\n");
+    printf ("5. FULL\n");
     printf ("6. EXIT\n");
     printf ("Opcao: ");
     scanf ("%d",&o);

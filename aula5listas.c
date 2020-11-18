@@ -21,12 +21,13 @@ int menu (void);
 void Clear (Lista *pLista);
 void Reset (Lista *pLista);
 int Push (Lista *pLista, Nodo *pNodo, int index);
-//void Pop (Lista *pLista, int index);
+void Pop (Lista *pLista, char *rmv);
 void List (Lista *pLista);
 
 int main()
 {
     int o=0, index;
+    char rmv[50];
     Nodo *pNodo;
     Lista *pLista;
 
@@ -57,11 +58,13 @@ int main()
 
                 Push(pLista, pNodo, index);
                 break;
-                /*
             case 3:
-                Pop(pLista, index);
+                printf ("Qual alimento deseja remover: ");
+                setbuf(stdin,NULL);
+                scanf ("%[^\n]",rmv);
+
+                Pop(pLista, rmv);
                 break;
-                */
             case 4:
                 List(pLista);
                 break;
@@ -149,6 +152,35 @@ int Push (Lista *pLista, Nodo *pNodo, int index)
     
     pNodo->pNext = atual;
     anterior->pNext = pNodo;
+}
+
+void Pop (Lista *pLista, char *rmv)
+{
+    Nodo *anterior, *atual;
+
+    if (pLista->pFirst != NULL)
+    {
+        atual = pLista->pFirst;
+
+        while (strcmp(atual->info.nome, rmv) != 0)
+        {
+            anterior = atual;
+            atual = atual->pNext;
+        }   
+
+        if (atual == pLista->pFirst)
+        {
+            pLista->pFirst = pLista->pFirst->pNext;
+            free(atual);
+        }
+        else
+        {
+            anterior->pNext = atual->pNext;
+            free(atual);
+        }
+    }
+    else
+        printf ("Lista vazia!\n");
 }
 
 void List (Lista *pLista)

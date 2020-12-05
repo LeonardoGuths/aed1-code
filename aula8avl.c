@@ -21,22 +21,20 @@ int balanceaEsq (No **ppRaiz);
 int balanceaDir (No **ppRaiz);
 int Insere (No **ppRaiz, Registro x);
 int EhAVL(No* pRaiz);
-int freeAVL(No *pRaiz);
+void freeAVL(No **pRaiz);
+void freeNodos (No *ppRaiz);
 
 int main()
 {
-    int n;
+    int i, n;
     Registro x;
     No **ppArv;
-    No **ppArvDois;
+    Registro casosdeteste[11];
 
     ppArv = (No **)malloc(sizeof(No));
-    ppArvDois = (No **)malloc(sizeof(No));
-
     *ppArv = NULL;
-    *ppArvDois = NULL;
 
-    printf ("Quantos nos deseja na arvore: ");
+    printf ("Quantos nos deseja na arvore aleatoria: ");
     scanf ("%d",&n);
 
     srand(time(0));
@@ -45,21 +43,201 @@ int main()
     {
         x.Chave = rand();
         Insere (ppArv, x);
-        printf ("Insercao %d: ",i+1);
+        printf ("Insercao aleatoria %d: ",i+1);
         if (EhAVL(*ppArv))
             printf ("EH AVL\n");
         else
             printf ("NAO EH AVL\n");
     }
-    printf ("Teste final: ");
+    printf ("Teste final da arvore aleatoria: ");
     if (EhAVL(*ppArv))
         printf ("EH AVL\n");
     else
         printf ("NAO EH AVL\n");
 
+    freeAVL(ppArv);
+    printf ("________________________________________\n");
+
+//--------------------------------------------------------------------
+//Arvore do caso 1A
+    casosdeteste[0].Chave = 20;
+    casosdeteste[1].Chave = 4;
+    casosdeteste[2].Chave = 15;
+
+    printf ("[Caso 1A]\n");
+    for (i=0; i<3; i++)
+    {
+        printf ("Insere %d: ",casosdeteste[i].Chave);
+        Insere (ppArv, casosdeteste[i]);
+        if (EhAVL(*ppArv))
+            printf ("EH AVL\n");
+        else
+            printf ("NAO EH AVL\n");
+    }
+
+    printf ("Teste final [Caso 1A]: ");
+    if (EhAVL(*ppArv))
+        printf ("EH AVL\n");
+    else
+        printf ("NAO EH AVL\n");
+
+    freeAVL(ppArv);
+    printf ("________________________________________\n");
+
+//--------------------------------------------------------------------
+//Arvore do caso 2A
+    casosdeteste[0].Chave = 20;
+    casosdeteste[1].Chave = 4;
+    casosdeteste[2].Chave = 26;
+    casosdeteste[3].Chave = 3;
+    casosdeteste[4].Chave = 9;
+    casosdeteste[5].Chave = 15;
+
+    printf ("[Caso 2A]\n");
+    for (i=0; i<6; i++)
+    {
+        printf ("Insere %d: ",casosdeteste[i].Chave);
+        Insere (ppArv, casosdeteste[i]);
+        if (EhAVL(*ppArv))
+            printf ("EH AVL\n");
+        else
+            printf ("NAO EH AVL\n");
+    }
+
+    printf ("Teste final [Caso 2A]: ");
+    if (EhAVL(*ppArv))
+        printf ("EH AVL\n");
+    else
+        printf ("NAO EH AVL\n");
+
+    freeAVL(ppArv);
+    printf ("________________________________________\n");
+
+//--------------------------------------------------------------------
+//Arvore do caso 3A
+    casosdeteste[0].Chave = 20;
+    casosdeteste[1].Chave = 4;
+    casosdeteste[2].Chave = 26;
+    casosdeteste[3].Chave = 3;
+    casosdeteste[4].Chave = 9;
+    casosdeteste[5].Chave = 21;
+    casosdeteste[6].Chave = 30;
+    casosdeteste[7].Chave = 2;
+    casosdeteste[8].Chave = 7;
+    casosdeteste[9].Chave = 11;
+    casosdeteste[10].Chave = 15;
+
+    printf ("[Caso 3A]\n");
+    for (i=0; i<11; i++)
+    {
+        printf ("Insere %d: ",casosdeteste[i].Chave);
+        Insere (ppArv, casosdeteste[i]);
+        if (EhAVL(*ppArv))
+            printf ("EH AVL\n");
+        else
+            printf ("NAO EH AVL\n");
+    }
+
+    printf ("Teste final [Caso 3A]: ");
+    if (EhAVL(*ppArv))
+        printf ("EH AVL\n");
+    else
+        printf ("NAO EH AVL\n");
+
+    freeAVL(ppArv);
+    printf ("________________________________________\n");
+
+//--------------------------------------------------------------------
+//Arvore do caso 1B
+    casosdeteste[0].Chave = 20;
+    casosdeteste[1].Chave = 4;
+    casosdeteste[2].Chave = 8;
+
+    printf ("[Caso 1B]\n");
+    for (i=0; i<3; i++)
+    {
+        printf ("Insere %d: ",casosdeteste[i].Chave);
+        Insere (ppArv, casosdeteste[i]);
+        if (EhAVL(*ppArv))
+            printf ("EH AVL\n");
+        else
+            printf ("NAO EH AVL\n");
+    }
+
+    printf ("Teste final [Caso 1B]: ");
+    if (EhAVL(*ppArv))
+        printf ("EH AVL\n");
+    else
+        printf ("NAO EH AVL\n");
+
+    freeAVL(ppArv);
+    printf ("________________________________________\n");
+    
+//--------------------------------------------------------------------
+//Arvore do caso 2B
+    casosdeteste[0].Chave = 20;
+    casosdeteste[1].Chave = 4;
+    casosdeteste[2].Chave = 26;
+    casosdeteste[3].Chave = 3;
+    casosdeteste[4].Chave = 9;
+    casosdeteste[5].Chave = 8;
+
+    printf ("[Caso 2B]\n");
+    for (i=0; i<6; i++)
+    {
+        printf ("Insere %d: ",casosdeteste[i].Chave);
+        Insere (ppArv, casosdeteste[i]);
+        if (EhAVL(*ppArv))
+            printf ("EH AVL\n");
+        else
+            printf ("NAO EH AVL\n");
+    }
+
+    printf ("Teste final [Caso 2B]: ");
+    if (EhAVL(*ppArv))
+        printf ("EH AVL\n");
+    else
+        printf ("NAO EH AVL\n");
+
+    freeAVL(ppArv);
+    printf ("________________________________________\n");
+
+//--------------------------------------------------------------------
+//Arvore do caso 3B
+    casosdeteste[0].Chave = 20;
+    casosdeteste[1].Chave = 4;
+    casosdeteste[2].Chave = 26;
+    casosdeteste[3].Chave = 3;
+    casosdeteste[4].Chave = 9;
+    casosdeteste[5].Chave = 21;
+    casosdeteste[6].Chave = 30;
+    casosdeteste[7].Chave = 2;
+    casosdeteste[8].Chave = 7;
+    casosdeteste[9].Chave = 11;
+    casosdeteste[10].Chave = 8;
+
+    printf ("[Caso 3B]\n");
+    for (i=0; i<11; i++)
+    {
+        printf ("Insere %d: ",casosdeteste[i].Chave);
+        Insere (ppArv, casosdeteste[i]);
+        if (EhAVL(*ppArv))
+            printf ("EH AVL\n");
+        else
+            printf ("NAO EH AVL\n");
+    }
+
+    printf ("Teste final [Caso 3B]: ");
+    if (EhAVL(*ppArv))
+        printf ("EH AVL\n");
+    else
+        printf ("NAO EH AVL\n");
+
+    freeAVL(ppArv);
+    printf ("________________________________________\n");
+    
 free (ppArv);
-free (ppArvDois);
-    return 0;
+return 0;
 }
 
 int Altura (No *pRaiz)
@@ -224,22 +402,20 @@ int EhAVL(No* pRaiz)
         return 1;
 }
 
-int freeAVL (No *pRaiz)
+void freeAVL (No **ppRaiz)
+{
+    freeNodos(*ppRaiz);
+    *ppRaiz = NULL;
+    return;
+}
+
+void freeNodos (No *pRaiz)
 {
     if (pRaiz == NULL)
-        return 0;
+        return;
+    
+    freeNodos(pRaiz->pEsq);
+    freeNodos(pRaiz->pDir);
 
-    if (pRaiz->pEsq == NULL && pRaiz->pDir == NULL)
-    {
-        free(pRaiz);
-        return 1;
-    }
-    if (freeAVL(pRaiz->pEsq))
-    {
-
-    }
-    else if (freeAVL(pRaiz->pDir))
-    {
-
-    }
+    free (pRaiz);
 }
